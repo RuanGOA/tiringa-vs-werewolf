@@ -1,4 +1,6 @@
-﻿import Maps
+﻿module Game where
+
+import Maps
 import Util
 import Position
 import Tiringa
@@ -17,7 +19,7 @@ start :: Matrix Char -> (Int, Int) -> (Int, Int) -> IO ()
 start m wereWolfPos tiringaPosition = do
 
     -- Select Direction
-    system ("cls")
+    system "clear"
     print m
     putStr "Select a direction: "
     dir <- getLine
@@ -42,14 +44,14 @@ start m wereWolfPos tiringaPosition = do
         else do
 
             -- Lost the game
-            system ("cls")
+            system "clear"
             print newMatrix
             print message2
 
     else do
 
         -- Win the game
-        system ("cls")
+        system "clear"
         print matrix
         print message1
 
@@ -68,7 +70,6 @@ mapper :: Matrix Char -> (Int, Int) -> (Int, Int) -> (String, Bool)
 mapper m posTir posWW | (lostTheGame posTir posWW) = ("Game Over!", False)
                       | wonTheGame m posTir = ("You Won! Congratulations!", False)
                       | otherwise = ("", True)
-
 wonTheGame :: Matrix Char -> (Int, Int) -> Bool
 wonTheGame m (tx,ty) = (tx == sx) && (ty == sy)
                        where (sx,sy) = findElementMatrix 'S' m (Data.Matrix.nrows m)
