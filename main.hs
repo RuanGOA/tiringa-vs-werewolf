@@ -3,12 +3,12 @@ import Game
 import Maps
 import System.Exit (exitSuccess)
 import System.Process
-import System.Random
+import System.IO
+import Control.Exception
+import Data.Time
 
-maps = [m1, m2, m3, m4, m5]
-
-comoJogar :: Matrix Char -> IO ()
-comoJogar m = do
+comoJogar :: IO ()
+comoJogar = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=           COMO JOGAR?             ="
@@ -33,15 +33,15 @@ comoJogar m = do
   putStrLn "====================================="
   opcaoComoJogar <- getLine
   system "cls"
-  redirecionaComoJogar opcaoComoJogar m
+  redirecionaComoJogar opcaoComoJogar
 
 redirecionaComoJogar :: String -> Matrix Char -> IO ()
 redirecionaComoJogar st m
   | st == "M" || st == "m" = menu m
   | otherwise = comoJogar m
 
-vencedor :: Matrix Char -> IO ()
-vencedor m = do
+vencedor :: IO ()
+vencedor = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=           MELHOR TEMPO            ="
@@ -54,15 +54,15 @@ vencedor m = do
   putStrLn "====================================="
   opcaoVencedor <- getLine
   system "cls"
-  redirecionaVencedor opcaoVencedor m
+  redirecionaVencedor opcaoVencedor
 
 redirecionaVencedor :: String -> Matrix Char -> IO ()
 redirecionaVencedor st m
   | st == "M" || st == "m" = menu m
   | otherwise = vencedor m
 
-dificuldade :: Matrix Char -> IO ()
-dificuldade m = do
+dificuldade :: IO ()
+dificuldade = do
   putStrLn "==================================="
   putStrLn "=                                 ="
   putStrLn "=          DIFICULDADE            ="
@@ -78,15 +78,15 @@ dificuldade m = do
   putStrLn "==================================="
   opcaoDificuldade <- getLine
   system "cls"
-  redirecionaDificuldade opcaoDificuldade m
+  redirecionaDificuldade opcaoDificuldade
 
 redirecionaDificuldade :: String -> Matrix Char -> IO ()
 redirecionaDificuldade st m
   | st == "M" || st == "m" = menu m
   | otherwise = prepare m st
 
-menu :: Matrix Char -> IO ()
-menu m = do
+menu :: IO ()
+menu = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=       TIRINGA VS. WEREWOLF        ="
@@ -101,7 +101,31 @@ menu m = do
 
   opcaoMenu <- getLine
   system "cls"
-  redirecionaMenu opcaoMenu m
+  redirecionaMenu opcaoMenu
+
+
+bestPlayer :: IO()
+bestPlayer = do
+  arq <- openFile "ranking.txt" ReadMode
+  content <- hGetContents arq
+  let ranking = words content
+  let (bestN, bestM) = getTheBest ((length ranking) - 1) ranking (" ", "99999999999")
+  putStrLn ("The Best Player: " ++ bestN ++ " " ++ bestM)
+  hClose arq
+
+getTheBest :: Int -> [String] -> (String, String) -> (String, String)
+
+getTheBest (-1) [] _ = ("", "")
+
+getTheBest 1 l (p2,m2) | m1 < m2 = (p1, m1)
+                       | otherwise = (p2,m2)
+                       where m1 = l Prelude.!! 1
+                             p1 = l Prelude.!! 0
+
+getTheBest i l (p, m) | moves < m = getTheBest (i - 2) l (player, moves)
+                      | otherwise = getTheBest (i - 2) l (p, m)
+                      where player = (l Prelude.!! (i - 1))
+                            moves = (l Prelude.!! (i))
 
 redirecionaMenu :: String -> Matrix Char -> IO ()
 redirecionaMenu st m
@@ -111,8 +135,8 @@ redirecionaMenu st m
   | st == "S" || st == "s" = exitSuccess
   | otherwise = menu m
 
+
 main :: IO ()
 main = do
   system "cls"
-  indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
-  menu (maps Prelude.!! indexMap)
+  menu

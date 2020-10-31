@@ -7,16 +7,27 @@ import Tiringa
 import Util
 import WereWolf
 import Maps
+import System.IO
+import System.Random
+import Control.Exception
+import Data.Time
 
+maps = [m1, m2, m3, m4, m5]
 
-prepare :: Matrix Char -> String -> IO ()
-prepare m dif = do
+prepare :: String -> IO ()
+prepare dif = do
+  putStr "Type your name: "
+  name <- getLine
+  indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
+  let m = (maps Prelude.!! indexMap) :: (Matrix Char)
+
   let wp = findElementMatrix 'W' m (Data.Matrix.nrows m) :: (Int, Int)
   let tp = findElementMatrix 'T' m (Data.Matrix.nrows m) :: (Int, Int)
-  start m wp tp dif
+  start m wp tp dif name 0
 
-start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> IO ()
-start m wereWolfPos tiringaPosition dif = do
+start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> String -> Int -> IO ()
+start m wereWolfPos tiringaPosition dif name movements = do
+  startTime <- getCurrentTime
   -- Select Direction
   system "cls"
   print m
@@ -46,14 +57,14 @@ start m wereWolfPos tiringaPosition dif = do
               let newMatrix2 = moveWereWolf newMatrix newPosWereWolf newPosWereWolf2
               if (contin22) 
                 then do
-                  start newMatrix2 newPosWereWolf2 newPosTiringa dif
+                  start newMatrix2 newPosWereWolf2 newPosTiringa dif name (movements + 1)
                 else do
                   -- Lost the game
                   system "cls"
                   print newMatrix2
                   print message22
           else do
-            start newMatrix newPosWereWolf newPosTiringa dif
+            start newMatrix newPosWereWolf newPosTiringa dif name (movements + 1)
         else do
           -- Lost the game
           system "cls"
@@ -61,6 +72,11 @@ start m wereWolfPos tiringaPosition dif = do
           print message2
     else do
       -- Win the game
+      endTime <- getCurrentTime
+      arq <- openFile "ranking.txt" AppendMode
+      hPutStr arq (name ++ " " ++ (show movements) ++ "\n")
+      hFlush arq
+      hClose arq
       system "cls"
       print matrix
       print message1
