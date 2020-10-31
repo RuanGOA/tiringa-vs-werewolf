@@ -18,6 +18,7 @@ prepare :: String -> IO ()
 prepare dif = do
   putStr "Type your name: "
   name <- getLine
+  system "clear"
   indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
   let m = (maps Prelude.!! indexMap) :: (Matrix Char)
 
@@ -29,7 +30,7 @@ start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> String -> Int -> I
 start m wereWolfPos tiringaPosition dif name movements = do
   startTime <- getCurrentTime
   -- Select Direction
-  system "cls"
+  system "clear"
   print m
   putStr "Select a direction: "
   dir <- getLine
@@ -60,14 +61,14 @@ start m wereWolfPos tiringaPosition dif name movements = do
                   start newMatrix2 newPosWereWolf2 newPosTiringa dif name (movements + 1)
                 else do
                   -- Lost the game
-                  system "cls"
+                  system "clear"
                   print newMatrix2
                   print message22
           else do
             start newMatrix newPosWereWolf newPosTiringa dif name (movements + 1)
         else do
           -- Lost the game
-          system "cls"
+          system "clear"
           print newMatrix
           print message2
     else do
@@ -77,7 +78,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
       hPutStr arq (name ++ " " ++ (show movements) ++ "\n")
       hFlush arq
       hClose arq
-      system "cls"
+      system "clear"
       print matrix
       print message1
 
