@@ -12,7 +12,7 @@ import System.Random
 import Control.Exception
 import Data.Time
 
-maps = [m1, m2, m3, m4]
+maps = [m1, m2, m3, m4, m5]
 
 prepare :: String -> IO ()
 prepare dif = do
@@ -20,6 +20,7 @@ prepare dif = do
   name <- getLine
   indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
   let m = (maps Prelude.!! indexMap) :: (Matrix Char)
+
   let wp = findElementMatrix 'W' m (Data.Matrix.nrows m) :: (Int, Int)
   let tp = findElementMatrix 'T' m (Data.Matrix.nrows m) :: (Int, Int)
   start m wp tp dif name 0

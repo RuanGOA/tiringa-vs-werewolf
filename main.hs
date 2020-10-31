@@ -35,19 +35,19 @@ comoJogar = do
   system "cls"
   redirecionaComoJogar opcaoComoJogar
 
-redirecionaComoJogar :: String -> IO ()
-redirecionaComoJogar st
-  | st == "M" = menu
-  | otherwise = comoJogar
+redirecionaComoJogar :: String -> Matrix Char -> IO ()
+redirecionaComoJogar st m
+  | st == "M" || st == "m" = menu m
+  | otherwise = comoJogar m
 
 vencedor :: IO ()
 vencedor = do
   putStrLn "====================================="
   putStrLn "=                                   ="
-  putStrLn "=             VENCEDOR              ="
+  putStrLn "=           MELHOR TEMPO            ="
   putStrLn "=             --------              ="
   putStrLn "=                                   ="
-  putStrLn "=    -->  ALGUEM 13:42:36  <--      ="
+  putStrLn "=                                   ="
   putStrLn "=                                   ="
   putStrLn "= M - MENU                          ="
   putStrLn "=                                   ="
@@ -56,10 +56,10 @@ vencedor = do
   system "cls"
   redirecionaVencedor opcaoVencedor
 
-redirecionaVencedor :: String -> IO ()
-redirecionaVencedor st
-  | st == "M" = menu
-  | otherwise = vencedor
+redirecionaVencedor :: String -> Matrix Char -> IO ()
+redirecionaVencedor st m
+  | st == "M" || st == "m" = menu m
+  | otherwise = vencedor m
 
 dificuldade :: IO ()
 dificuldade = do
@@ -71,7 +71,7 @@ dificuldade = do
   putStrLn "= ESCOLHA UMA DIFICULDADE         ="
   putStrLn "=                                 ="
   putStrLn "= 1 - FÁCIL                       ="
-  putStrLn "= 2 - DIFÍCIL                     ="
+  putStrLn "= 2 - TRYHARD                     ="
   putStrLn "=                                 ="
   putStrLn "= M - MENU                        ="
   putStrLn "=                                 ="
@@ -80,10 +80,10 @@ dificuldade = do
   system "cls"
   redirecionaDificuldade opcaoDificuldade
 
-redirecionaDificuldade :: String -> IO ()
-redirecionaDificuldade st
-  | st == "M" = menu
-  | otherwise = prepare st
+redirecionaDificuldade :: String -> Matrix Char -> IO ()
+redirecionaDificuldade st m
+  | st == "M" || st == "m" = menu m
+  | otherwise = prepare m st
 
 menu :: IO ()
 menu = do
@@ -94,9 +94,8 @@ menu = do
   putStrLn "=                                   ="
   putStrLn "= 1 - INICIAR JOGO                  ="
   putStrLn "= 2 - VENCEDOR                      ="
-  putStrLn "= 3 - SELECIONAR DIFICULDADE        ="
-  putStrLn "= 4 - COMO JOGAR?                   ="
-  putStrLn "= 5 - SAIR                          ="
+  putStrLn "= 3 - COMO JOGAR?                   ="
+  putStrLn "= S - SAIR                          ="
   putStrLn "=                                   ="
   putStrLn "====================================="
 
@@ -104,14 +103,6 @@ menu = do
   system "cls"
   redirecionaMenu opcaoMenu
 
-redirecionaMenu :: String -> IO ()
-redirecionaMenu st
-  | st == "1" = prepare "1"
-  | st == "2" = vencedor
-  | st == "3" = dificuldade
-  | st == "4" = comoJogar
-  | st == "5" = exitSuccess
-  | otherwise = menu
 
 bestPlayer :: IO()
 bestPlayer = do
@@ -135,6 +126,15 @@ getTheBest i l (p, m) | moves < m = getTheBest (i - 2) l (player, moves)
                       | otherwise = getTheBest (i - 2) l (p, m)
                       where player = (l Prelude.!! (i - 1))
                             moves = (l Prelude.!! (i))
+
+redirecionaMenu :: String -> Matrix Char -> IO ()
+redirecionaMenu st m
+  | st == "1" = dificuldade m
+  | st == "2" = vencedor m
+  | st == "3" = comoJogar m
+  | st == "S" || st == "s" = exitSuccess
+  | otherwise = menu m
+
 
 main :: IO ()
 main = do
