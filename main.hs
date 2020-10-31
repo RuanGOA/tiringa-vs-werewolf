@@ -9,6 +9,7 @@ import Data.Time
 
 comoJogar :: IO ()
 comoJogar = do
+  system "clear"
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=           COMO JOGAR?             ="
@@ -32,37 +33,37 @@ comoJogar = do
   putStrLn "=                                   ="
   putStrLn "====================================="
   opcaoComoJogar <- getLine
-  system "cls"
   redirecionaComoJogar opcaoComoJogar
 
-redirecionaComoJogar :: String -> Matrix Char -> IO ()
-redirecionaComoJogar st m
-  | st == "M" || st == "m" = menu m
-  | otherwise = comoJogar m
+redirecionaComoJogar :: String -> IO ()
+redirecionaComoJogar st
+  | st == "M" || st == "m" = menu
+  | otherwise = comoJogar
 
 vencedor :: IO ()
 vencedor = do
+  system "clear"
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=           MELHOR TEMPO            ="
   putStrLn "=             --------              ="
   putStrLn "=                                   ="
-  putStrLn "=                                   ="
+  bestPlayer
   putStrLn "=                                   ="
   putStrLn "= M - MENU                          ="
   putStrLn "=                                   ="
   putStrLn "====================================="
   opcaoVencedor <- getLine
-  system "cls"
   redirecionaVencedor opcaoVencedor
 
-redirecionaVencedor :: String -> Matrix Char -> IO ()
-redirecionaVencedor st m
-  | st == "M" || st == "m" = menu m
-  | otherwise = vencedor m
+redirecionaVencedor :: String -> IO ()
+redirecionaVencedor st
+  | st == "M" || st == "m" = menu
+  | otherwise = vencedor
 
 dificuldade :: IO ()
 dificuldade = do
+  system "clear"
   putStrLn "==================================="
   putStrLn "=                                 ="
   putStrLn "=          DIFICULDADE            ="
@@ -77,16 +78,16 @@ dificuldade = do
   putStrLn "=                                 ="
   putStrLn "==================================="
   opcaoDificuldade <- getLine
-  system "cls"
   redirecionaDificuldade opcaoDificuldade
 
-redirecionaDificuldade :: String -> Matrix Char -> IO ()
-redirecionaDificuldade st m
-  | st == "M" || st == "m" = menu m
-  | otherwise = prepare m st
+redirecionaDificuldade :: String -> IO ()
+redirecionaDificuldade st
+  | st == "M" || st == "m" = menu
+  | otherwise = prepare st
 
 menu :: IO ()
 menu = do
+  system "clear"
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=       TIRINGA VS. WEREWOLF        ="
@@ -100,9 +101,15 @@ menu = do
   putStrLn "====================================="
 
   opcaoMenu <- getLine
-  system "cls"
   redirecionaMenu opcaoMenu
 
+redirecionaMenu :: String -> IO ()
+redirecionaMenu st
+  | st == "1" = dificuldade 
+  | st == "2" = vencedor 
+  | st == "3" = comoJogar 
+  | st == "S" || st == "s" = exitSuccess
+  | otherwise = menu
 
 bestPlayer :: IO()
 bestPlayer = do
@@ -110,7 +117,7 @@ bestPlayer = do
   content <- hGetContents arq
   let ranking = words content
   let (bestN, bestM) = getTheBest ((length ranking) - 1) ranking (" ", "99999999999")
-  putStrLn ("The Best Player: " ++ bestN ++ " " ++ bestM)
+  putStrLn ("= " ++ bestN ++ " - " ++ bestM ++ " MOVIMENTOS")
   hClose arq
 
 getTheBest :: Int -> [String] -> (String, String) -> (String, String)
@@ -127,16 +134,7 @@ getTheBest i l (p, m) | moves < m = getTheBest (i - 2) l (player, moves)
                       where player = (l Prelude.!! (i - 1))
                             moves = (l Prelude.!! (i))
 
-redirecionaMenu :: String -> Matrix Char -> IO ()
-redirecionaMenu st m
-  | st == "1" = dificuldade m
-  | st == "2" = vencedor m
-  | st == "3" = comoJogar m
-  | st == "S" || st == "s" = exitSuccess
-  | otherwise = menu m
-
-
 main :: IO ()
 main = do
-  system "cls"
+  system "clear"
   menu
