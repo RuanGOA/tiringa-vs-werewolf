@@ -3,12 +3,12 @@ import Game
 import Maps
 import System.Exit (exitSuccess)
 import System.Process
-import System.Random
+import System.IO
+import Control.Exception
+import Data.Time
 
-maps = [m1, m2, m3, m4]
-
-comoJogar :: Matrix Char -> IO ()
-comoJogar m = do
+comoJogar :: IO ()
+comoJogar = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=           COMO JOGAR?             ="
@@ -33,15 +33,15 @@ comoJogar m = do
   putStrLn "====================================="
   opcaoComoJogar <- getLine
   system "cls"
-  redirecionaComoJogar opcaoComoJogar m
+  redirecionaComoJogar opcaoComoJogar
 
-redirecionaComoJogar :: String -> Matrix Char -> IO ()
-redirecionaComoJogar st m
-  | st == "M" = menu m
-  | otherwise = comoJogar m
+redirecionaComoJogar :: String -> IO ()
+redirecionaComoJogar st
+  | st == "M" = menu
+  | otherwise = comoJogar
 
-vencedor :: Matrix Char -> IO ()
-vencedor m = do
+vencedor :: IO ()
+vencedor = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=             VENCEDOR              ="
@@ -54,15 +54,15 @@ vencedor m = do
   putStrLn "====================================="
   opcaoVencedor <- getLine
   system "cls"
-  redirecionaVencedor opcaoVencedor m
+  redirecionaVencedor opcaoVencedor
 
-redirecionaVencedor :: String -> Matrix Char -> IO ()
-redirecionaVencedor st m
-  | st == "M" = menu m
-  | otherwise = vencedor m
+redirecionaVencedor :: String -> IO ()
+redirecionaVencedor st
+  | st == "M" = menu
+  | otherwise = vencedor
 
-dificuldade :: Matrix Char -> IO ()
-dificuldade m = do
+dificuldade :: IO ()
+dificuldade = do
   putStrLn "==================================="
   putStrLn "=                                 ="
   putStrLn "=          DIFICULDADE            ="
@@ -78,15 +78,15 @@ dificuldade m = do
   putStrLn "==================================="
   opcaoDificuldade <- getLine
   system "cls"
-  redirecionaDificuldade opcaoDificuldade m
+  redirecionaDificuldade opcaoDificuldade
 
-redirecionaDificuldade :: String -> Matrix Char -> IO ()
-redirecionaDificuldade st m
-  | st == "M" = menu m
-  | otherwise = prepare m st
+redirecionaDificuldade :: String -> IO ()
+redirecionaDificuldade st
+  | st == "M" = menu
+  | otherwise = prepare st
 
-menu :: Matrix Char -> IO ()
-menu m = do
+menu :: IO ()
+menu = do
   putStrLn "====================================="
   putStrLn "=                                   ="
   putStrLn "=       TIRINGA VS. WEREWOLF        ="
@@ -102,19 +102,41 @@ menu m = do
 
   opcaoMenu <- getLine
   system "cls"
-  redirecionaMenu opcaoMenu m
+  redirecionaMenu opcaoMenu
 
-redirecionaMenu :: String -> Matrix Char -> IO ()
-redirecionaMenu st m
-  | st == "1" = prepare m "1"
-  | st == "2" = vencedor m
-  | st == "3" = dificuldade m
-  | st == "4" = comoJogar m
+redirecionaMenu :: String -> IO ()
+redirecionaMenu st
+  | st == "1" = prepare "1"
+  | st == "2" = vencedor
+  | st == "3" = dificuldade
+  | st == "4" = comoJogar
   | st == "5" = exitSuccess
-  | otherwise = menu m
+  | otherwise = menu
+
+bestPlayer :: IO()
+bestPlayer = do
+  arq <- openFile "ranking.txt" ReadMode
+  content <- hGetContents arq
+  let ranking = words content
+  let (bestN, bestM) = getTheBest ((length ranking) - 1) ranking (" ", "99999999999")
+  putStrLn ("The Best Player: " ++ bestN ++ " " ++ bestM)
+  hClose arq
+
+getTheBest :: Int -> [String] -> (String, String) -> (String, String)
+
+getTheBest (-1) [] _ = ("", "")
+
+getTheBest 1 l (p2,m2) | m1 < m2 = (p1, m1)
+                       | otherwise = (p2,m2)
+                       where m1 = l Prelude.!! 1
+                             p1 = l Prelude.!! 0
+
+getTheBest i l (p, m) | moves < m = getTheBest (i - 2) l (player, moves)
+                      | otherwise = getTheBest (i - 2) l (p, m)
+                      where player = (l Prelude.!! (i - 1))
+                            moves = (l Prelude.!! (i))
 
 main :: IO ()
 main = do
   system "cls"
-  indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
-  menu (maps Prelude.!! indexMap)
+  menu
