@@ -5,7 +5,7 @@ import System.Exit (exitSuccess)
 import System.Process
 import System.Random
 
-maps = [m1, m2, m3, m4]
+maps = [m1, m2, m3, m4, m5]
 
 comoJogar :: Matrix Char -> IO ()
 comoJogar m = do
@@ -37,17 +37,17 @@ comoJogar m = do
 
 redirecionaComoJogar :: String -> Matrix Char -> IO ()
 redirecionaComoJogar st m
-  | st == "M" = menu m
+  | st == "M" || st == "m" = menu m
   | otherwise = comoJogar m
 
 vencedor :: Matrix Char -> IO ()
 vencedor m = do
   putStrLn "====================================="
   putStrLn "=                                   ="
-  putStrLn "=             VENCEDOR              ="
+  putStrLn "=           MELHOR TEMPO            ="
   putStrLn "=             --------              ="
   putStrLn "=                                   ="
-  putStrLn "=    -->  ALGUEM 13:42:36  <--      ="
+  putStrLn "=                                   ="
   putStrLn "=                                   ="
   putStrLn "= M - MENU                          ="
   putStrLn "=                                   ="
@@ -58,7 +58,7 @@ vencedor m = do
 
 redirecionaVencedor :: String -> Matrix Char -> IO ()
 redirecionaVencedor st m
-  | st == "M" = menu m
+  | st == "M" || st == "m" = menu m
   | otherwise = vencedor m
 
 dificuldade :: Matrix Char -> IO ()
@@ -71,7 +71,7 @@ dificuldade m = do
   putStrLn "= ESCOLHA UMA DIFICULDADE         ="
   putStrLn "=                                 ="
   putStrLn "= 1 - FÁCIL                       ="
-  putStrLn "= 2 - DIFÍCIL                     ="
+  putStrLn "= 2 - TRYHARD                     ="
   putStrLn "=                                 ="
   putStrLn "= M - MENU                        ="
   putStrLn "=                                 ="
@@ -82,7 +82,7 @@ dificuldade m = do
 
 redirecionaDificuldade :: String -> Matrix Char -> IO ()
 redirecionaDificuldade st m
-  | st == "M" = menu m
+  | st == "M" || st == "m" = menu m
   | otherwise = prepare m st
 
 menu :: Matrix Char -> IO ()
@@ -94,9 +94,8 @@ menu m = do
   putStrLn "=                                   ="
   putStrLn "= 1 - INICIAR JOGO                  ="
   putStrLn "= 2 - VENCEDOR                      ="
-  putStrLn "= 3 - SELECIONAR DIFICULDADE        ="
-  putStrLn "= 4 - COMO JOGAR?                   ="
-  putStrLn "= 5 - SAIR                          ="
+  putStrLn "= 3 - COMO JOGAR?                   ="
+  putStrLn "= S - SAIR                          ="
   putStrLn "=                                   ="
   putStrLn "====================================="
 
@@ -106,11 +105,10 @@ menu m = do
 
 redirecionaMenu :: String -> Matrix Char -> IO ()
 redirecionaMenu st m
-  | st == "1" = prepare m "1"
+  | st == "1" = dificuldade m
   | st == "2" = vencedor m
-  | st == "3" = dificuldade m
-  | st == "4" = comoJogar m
-  | st == "5" = exitSuccess
+  | st == "3" = comoJogar m
+  | st == "S" || st == "s" = exitSuccess
   | otherwise = menu m
 
 main :: IO ()

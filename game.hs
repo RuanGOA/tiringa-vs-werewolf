@@ -8,6 +8,7 @@ import Util
 import WereWolf
 import Maps
 
+
 prepare :: Matrix Char -> String -> IO ()
 prepare m dif = do
   let wp = findElementMatrix 'W' m (Data.Matrix.nrows m) :: (Int, Int)
