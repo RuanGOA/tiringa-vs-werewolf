@@ -17,7 +17,7 @@ maps = [m1, m2, m3, m4, m5]
 
 prepare :: String -> IO ()
 prepare dif = do
-  putStr "Type your name: "
+  putStr "INFORME SEU NOME: "
   name <- getLine
   system "clear"
   indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int

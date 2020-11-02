@@ -83,7 +83,9 @@ dificuldade = do
 redirecionaDificuldade :: String -> IO ()
 redirecionaDificuldade st
   | st == "M" || st == "m" = menu
-  | otherwise = prepare st
+  | st == "1" = prepare "1"
+  | st == "2" = prepare "2"
+  | otherwise = dificuldade
 
 menu :: IO ()
 menu = do
