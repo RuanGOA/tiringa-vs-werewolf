@@ -11,6 +11,7 @@ import System.IO
 import System.Random
 import Control.Exception
 import Data.Time
+import System.Exit (exitSuccess)
 
 maps = [m1, m2, m3, m4, m5]
 
@@ -32,7 +33,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
   -- Select Direction
   system "clear"
   print m
-  putStr "Select a direction: "
+  putStr "SELECIONE UMA DIREÇÃO: "
   dir <- getLine
 
   -- Tiringa Movement
@@ -64,6 +65,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
                   system "clear"
                   print newMatrix2
                   print message22
+                  await
           else do
             start newMatrix newPosWereWolf newPosTiringa dif name (movements + 1)
         else do
@@ -71,6 +73,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
           system "clear"
           print newMatrix
           print message2
+          await
     else do
       -- Win the game
       endTime <- getCurrentTime
@@ -81,6 +84,13 @@ start m wereWolfPos tiringaPosition dif name movements = do
       system "clear"
       print matrix
       print message1
+      await
+
+await :: IO()
+await = do
+  putStrLn "APERTE ENTER"
+  a <- getLine
+  putStrLn ""
 
 wereWolfPosition :: (Int, Int) -> Int -> [(Int, Int)] -> (Int, Int)
 wereWolfPosition lastPosition n possMov
@@ -97,8 +107,8 @@ selectDirection m dir oldP
 
 mapper :: Matrix Char -> (Int, Int) -> (Int, Int) -> (String, Bool)
 mapper m posTir posWW
-  | (lostTheGame posTir posWW) = ("Game Over!", False)
-  | wonTheGame m posTir = ("You Won! Congratulations!", False)
+  | (lostTheGame posTir posWW) = ("VOCÊ PERDEU. FIM DE JOGO.", False)
+  | wonTheGame m posTir = ("VOCÊ GANHOU! PARABÉNS!", False)
   | otherwise = ("", True)
 
 wonTheGame :: Matrix Char -> (Int, Int) -> Bool
