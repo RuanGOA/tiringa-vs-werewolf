@@ -1,0 +1,15 @@
+name:                TiringaVsWerewolf
+version:             0.1.0.0        
+license:             MIT
+license-file:        LICENSE         
+category:            Game
+build-type:          Simple
+extra-source-files:  ChangeLog.md, README.md
+cabal-version:       >=1.10
+
+executable JumpMaster
+  main-is:             Main.hs
+  -- other-modules:    
+  build-depends:       base >=4.8, random, process, matrix, vector
+  hs-source-dirs:      src
+  default-language:    Haskell2010
