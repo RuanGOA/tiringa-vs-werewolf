@@ -16,7 +16,7 @@ maps = [m1, m2, m3, m4, m5]
 
 prepare :: String -> String -> IO ()
 prepare dif name = do
-  system "clear"
+  system "cls"
   indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
   let m = (maps Prelude.!! indexMap) :: (Matrix Char)
 
@@ -27,7 +27,7 @@ prepare dif name = do
 start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> String -> Int -> IO ()
 start m wereWolfPos tiringaPosition dif name movements = do
   -- Select Direction
-  system "clear"
+  system "cls"
   print m
   putStrLn " SELECIONE UMA DIRECAO: "
   dir <- getLine
@@ -58,7 +58,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
                   start newMatrix2 newPosWereWolf2 newPosTiringa dif name (movements + 1)
                 else do
                   -- Lost the game
-                  system "clear"
+                  system "cls"
                   putStrLn (show newMatrix2)
                   print message22
                   await
@@ -66,17 +66,17 @@ start m wereWolfPos tiringaPosition dif name movements = do
             start newMatrix newPosWereWolf newPosTiringa dif name (movements + 1)
         else do
           -- Lost the game
-          system "clear"
+          system "cls"
           putStrLn (show newMatrix)
           print message2
           await
     else do
       -- Win the game
-      arq <- openFile "../ranking.txt" AppendMode
+      arq <- openFile "ranking.txt" AppendMode
       hPutStr arq (name ++ " " ++ (show movements) ++ "\n")
       hFlush arq
       hClose arq
-      system "clear"
+      system "cls"
       print matrix
       print message1
       await
