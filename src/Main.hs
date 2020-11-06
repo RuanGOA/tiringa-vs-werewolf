@@ -8,7 +8,7 @@ import Control.Exception
 
 comoJogar :: IO ()
 comoJogar = do
-  system "clear"
+  system "cls"
   putStrLn ""
   putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "             COMO JOGAR?             " ++ "\x1b[0m")
   putStrLn ""
@@ -38,7 +38,7 @@ redirecionaComoJogar st
 
 vencedor :: IO ()
 vencedor = do
-  system "clear"
+  system "cls"
   putStrLn ""
   putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "            MELHOR TEMPO             " ++ "\x1b[0m")
   putStrLn ""
@@ -56,7 +56,7 @@ redirecionaVencedor st
 
 dificuldade :: IO ()
 dificuldade = do
-  system "clear"
+  system "cls"
   putStrLn ""
   putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "             DIFICULDADE             " ++ "\x1b[0m")
   putStrLn ""
@@ -79,15 +79,16 @@ redirecionaDificuldade st
 
 iniciaJogo :: String -> IO()
 iniciaJogo st = do
+  system "cls"
   putStrLn " INFORME SEU NOME: "
   nome <- getLine
   prepare st nome
 
 menu :: IO ()
 menu = do
-  system "clear"
+  system "cls"
   putStrLn ""
-  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++  "        TIRINGA VS. WEREWOLF         " ++ "\x1b[0m")
+  putStrLn ("\x1b[47m" ++ "\x1b" ++  "        TIRINGA VS. WEREWOLF         " ++ "\x1b[0m")
   putStrLn ""
   putStrLn " 1 - INICIAR JOGO"
   putStrLn " 2 - VENCEDOR"
@@ -108,7 +109,7 @@ redirecionaMenu st
 
 bestPlayer :: IO()
 bestPlayer = do
-  arq <- openFile "../ranking.txt" ReadMode
+  arq <- openFile "ranking.txt" ReadMode
   content <- hGetContents arq
   let ranking = words content
   let (bestN, bestM) = getTheBest ((length ranking) - 1) ranking (" ", "99999999999")
