@@ -78,12 +78,12 @@ redirecionaDificuldade st
   | otherwise = iniciaJogo st
 
 iniciaJogo :: String -> IO()
-iniciaJogo st = do
+iniciaJogo dificuldade = do
   system "clear"
   putStrLn ""
   putStrLn ("\x1b[41m" ++ "\x1b[37m" ++ " INFORME 3 LETRAS PARA REPRESENTAÇÃO:" ++ "\x1b[0m")
   nome <- getLine
-  prepare st nome
+  prepare dificuldade nome
 
 menu :: IO ()
 menu = do

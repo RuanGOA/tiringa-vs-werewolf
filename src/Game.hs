@@ -29,7 +29,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
   -- Select Direction
   system "clear"
   printMatrix m 1
-  putStrLn " SELECIONE UMA DIRECAO: "
+  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "             SELECIONE UMA DIRECAO:             " ++ "\x1b[0m")
   dir <- getLine
 
   -- Tiringa Movement
