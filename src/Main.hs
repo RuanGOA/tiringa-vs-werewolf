@@ -8,9 +8,9 @@ import Control.Exception
 
 comoJogar :: IO ()
 comoJogar = do
-  system "cls"
+  system "clear"
   putStrLn ""
-  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "             COMO JOGAR?             " ++ "\x1b[0m")
+  putStrLn ("\x1b[41m" ++ "\x1b[37m" ++ "             COMO JOGAR?             " ++ "\x1b[0m")
   putStrLn ""
   putStrLn "  O JOGO CONSISTE EM FAZER  TIRINGA  "
   putStrLn "  ESCAPAR DA CHÁCARA, ANTES  QUE  O  "
@@ -38,9 +38,9 @@ redirecionaComoJogar st
 
 vencedor :: IO ()
 vencedor = do
-  system "cls"
+  system "clear"
   putStrLn ""
-  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "            MELHOR TEMPO             " ++ "\x1b[0m")
+  putStrLn ("\x1b[41m" ++ "\x1b[37m" ++ "            MELHOR TEMPO             " ++ "\x1b[0m")
   putStrLn ""
   bestPlayer
   putStrLn ""
@@ -56,9 +56,9 @@ redirecionaVencedor st
 
 dificuldade :: IO ()
 dificuldade = do
-  system "cls"
+  system "clear"
   putStrLn ""
-  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "             DIFICULDADE             " ++ "\x1b[0m")
+  putStrLn ("\x1b[41m" ++ "\x1b[37m" ++ "             DIFICULDADE             " ++ "\x1b[0m")
   putStrLn ""
   putStrLn " ESCOLHA UMA DIFICULDADE"
   putStrLn ""
@@ -79,16 +79,17 @@ redirecionaDificuldade st
 
 iniciaJogo :: String -> IO()
 iniciaJogo st = do
-  system "cls"
-  putStrLn " INFORME SEU NOME: "
+  system "clear"
+  putStrLn ""
+  putStrLn ("\x1b[41m" ++ "\x1b[37m" ++ " INFORME 3 LETRAS PARA REPRESENTAÇÃO:" ++ "\x1b[0m")
   nome <- getLine
   prepare st nome
 
 menu :: IO ()
 menu = do
-  system "cls"
+  system "clear"
   putStrLn ""
-  putStrLn ("\x1b[47m" ++ "\x1b" ++  "        TIRINGA VS. WEREWOLF         " ++ "\x1b[0m")
+  putStrLn ("\x1b[41m" ++ "\x1b[37m" ++  "        TIRINGA VS. WEREWOLF         " ++ "\x1b[0m")
   putStrLn ""
   putStrLn " 1 - INICIAR JOGO"
   putStrLn " 2 - VENCEDOR"
@@ -113,7 +114,7 @@ bestPlayer = do
   content <- hGetContents arq
   let ranking = words content
   let (bestN, bestM) = getTheBest ((length ranking) - 1) ranking (" ", "99999999999")
-  putStrLn (bestN ++ " - " ++ bestM ++ " MOVIMENTOS")
+  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "         " ++ bestN ++ " - " ++ bestM ++ " MOVIMENTOS" ++ "         " ++ "\x1b[0m")
   hClose arq
 
 getTheBest :: Int -> [String] -> (String, String) -> (String, String)

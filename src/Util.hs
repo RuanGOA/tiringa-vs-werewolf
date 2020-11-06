@@ -31,7 +31,13 @@ printMatrix m r = do
 printMatrixAux :: Vector Char -> Int -> String
 printMatrixAux v i
   | i == (Data.Vector.length v) = ""
-  | otherwise = (function (v Data.Vector.! i)) Prelude.++ (printMatrixAux v (i + 1))
+  | otherwise = (treatChar (v Data.Vector.! i)) Prelude.++ (printMatrixAux v (i + 1))
 
-function :: Char -> String
-function c = (" " Prelude.++ [c] Prelude.++ " ")
+treatChar :: Char -> String
+treatChar c
+  | st == "#" = ("\x1b[47m" Prelude.++ "\x1b[32m" Prelude.++ ['#', c, '#'] Prelude.++ "\x1b[0m")
+  | st == "W" = ("\x1b[47m" Prelude.++ "\x1b[31m" Prelude.++ [' ', c, ' '] Prelude.++ "\x1b[0m")
+  | st == "T" = ("\x1b[47m" Prelude.++ "\x1b[34m" Prelude.++ [' ', c, ' '] Prelude.++ "\x1b[0m")
+  | st == "S" = ("\x1b[47m" Prelude.++ "\x1b[35m" Prelude.++ [' ', c, ' '] Prelude.++ "\x1b[0m")
+  | otherwise = ("\x1b[47m" Prelude.++ [' ', c, ' '] Prelude.++ "\x1b[0m")
+  where st = [c]
