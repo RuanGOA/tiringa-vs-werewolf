@@ -16,7 +16,7 @@ maps = [m1, m2, m3, m4, m5]
 
 prepare :: String -> String -> IO ()
 prepare dif name = do
-  system "cls"
+  system "clear"
   indexMap <- randomRIO (0, (Prelude.length maps) - 1) :: IO Int
   let m = (maps Prelude.!! indexMap) :: (Matrix Char)
 
@@ -27,7 +27,7 @@ prepare dif name = do
 start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> String -> Int -> IO ()
 start m wereWolfPos tiringaPosition dif name movements = do
   -- Select Direction
-  system "cls"
+  system "clear"
   printMatrix m 1
   putStrLn " SELECIONE UMA DIRECAO: "
   dir <- getLine
@@ -58,17 +58,17 @@ start m wereWolfPos tiringaPosition dif name movements = do
                   start newMatrix2 newPosWereWolf2 newPosTiringa dif name (movements + 1)
                 else do
                   -- Lost the game
-                  system "cls"
+                  system "clear"
                   printMatrix newMatrix2 1
-                  print message22
+                  putStrLn message22
                   await
           else do
             start newMatrix newPosWereWolf newPosTiringa dif name (movements + 1)
         else do
           -- Lost the game
-          system "cls"
-          putStrLn (show newMatrix)
-          print message2
+          system "clear"
+          printMatrix newMatrix 1
+          putStrLn message2
           await
     else do
       -- Win the game
@@ -76,14 +76,14 @@ start m wereWolfPos tiringaPosition dif name movements = do
       hPutStr arq (name ++ " " ++ (show movements) ++ "\n")
       hFlush arq
       hClose arq
-      system "cls"
+      system "clear"
       printMatrix matrix 1
-      print message1
+      putStrLn message1
       await
 
 await :: IO()
 await = do
-  putStrLn " --> APERTE ENTER PARA VOLTAR AO MENU <--"
+  putStrLn ("\x1b[47m" ++ "\x1b[31m" ++ "    --> APERTE ENTER PARA VOLTAR AO MENU <--    " ++ "\x1b[0m")
   a <- getLine
   putStr ""
 
@@ -102,8 +102,8 @@ selectDirection m dir oldP
 
 mapper :: Matrix Char -> (Int, Int) -> (Int, Int) -> (String, Bool)
 mapper m posTir posWW
-  | (lostTheGame posTir posWW) = (" VOCE PERDEU. FIM DE JOGO.", False)
-  | wonTheGame m posTir = (" VOCE GANHOU! PARABENS!", False)
+  | (lostTheGame posTir posWW) = (("\x1b[41m" ++ "\x1b[30m" ++ "             VOCE PERDEU. FIM DE JOGO.          " ++ "\x1b[0m"), False)
+  | wonTheGame m posTir = (("\x1b[44m" ++ "\x1b[37m" ++ "             VOCE GANHOU! PARABENS!             " ++ "\x1b[0m"), False)
   | otherwise = ("", True)
 
 wonTheGame :: Matrix Char -> (Int, Int) -> Bool
