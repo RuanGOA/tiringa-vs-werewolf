@@ -28,7 +28,7 @@ start :: Matrix Char -> (Int, Int) -> (Int, Int) -> String -> String -> Int -> I
 start m wereWolfPos tiringaPosition dif name movements = do
   -- Select Direction
   system "cls"
-  print m
+  printMatrix m 1
   putStrLn " SELECIONE UMA DIRECAO: "
   dir <- getLine
 
@@ -59,7 +59,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
                 else do
                   -- Lost the game
                   system "cls"
-                  putStrLn (show newMatrix2)
+                  printMatrix newMatrix2 1
                   print message22
                   await
           else do
@@ -77,7 +77,7 @@ start m wereWolfPos tiringaPosition dif name movements = do
       hFlush arq
       hClose arq
       system "cls"
-      print matrix
+      printMatrix matrix 1
       print message1
       await
 
