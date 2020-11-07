@@ -122,15 +122,17 @@ getTheBest :: Int -> [String] -> (String, String) -> (String, String)
 
 getTheBest (-1) _ _ = ("", "")
 
-getTheBest 1 l (p2,m2) | m1 < m2 = (p1, m1)
+getTheBest 1 l (p2,m2) | m1 < m2Int = ((l Prelude.!! 0), (l Prelude.!! 1) )
                        | otherwise = (p2,m2)
-                       where m1 = l Prelude.!! 1
-                             p1 = l Prelude.!! 0
+                       where m1 = read (l Prelude.!! 1) :: Int
+                             p1 = read (l Prelude.!! 0) :: Int
+                             m2Int = read (m2) :: Int
 
-getTheBest i l (p, m) | moves < m = getTheBest (i - 2) l (player, moves)
+getTheBest i l (p, m) | moves < mInt = getTheBest (i - 2) l (player, (l Prelude.!! (i)))
                       | otherwise = getTheBest (i - 2) l (p, m)
                       where player = (l Prelude.!! (i - 1))
-                            moves = (l Prelude.!! (i))
+                            moves = read (l Prelude.!! (i)) :: Int
+                            mInt = read m :: Int
 
 main :: IO ()
 main = do
