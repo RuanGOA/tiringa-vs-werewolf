@@ -7,7 +7,7 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
 cabal-version:       >=1.10
 
-executable JumpMaster
+executable TiringaVsWerewolf
   main-is:             Main.hs
   -- other-modules:    
   build-depends:       base >=4.8, random, process, matrix, vector
