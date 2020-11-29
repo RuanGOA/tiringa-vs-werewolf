@@ -14,7 +14,7 @@ comoJogar = do
   putStrLn ""
   putStrLn "  O JOGO CONSISTE EM FAZER  TIRINGA  "
   putStrLn "  ESCAPAR DA CHÁCARA (CHEGAR AO S),  "
-  putStrLn " ANTES  QUE  O LOBISOMEM O PEGUE."
+  putStrLn "  ANTES  QUE  O LOBISOMEM O PEGUE."
   putStrLn ""
   putStrLn "  REPRESENTAÇÃO :"
   putStrLn "    T - TIRINGA"
